@@ -1,0 +1,98 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+
+<!-- Add your site or application content here -->
+<div class="container">
+  <div class="row">
+    <div class="column" style="float: left; width: 50%">
+      <form>
+        <p>Input Altitude and latitude of starting point</p>
+        <label for="alt1">Starting Altitude:</label>
+        <input type="text" id="alt1" name="alt1"><br><br>
+        <label for="lat1">Starting Latitude:</label>
+        <input type="text" id="lat1" name="lat1"><br><br>
+        <p>Input Altitude and latitude of end point</p>
+        <label for="alt2">Ending Altitude:</label>
+        <input type="text" id="alt2" name="alt2"><br><br>
+        <label for="lat1">Ending Latitude:</label>
+        <input type="text" id="lat2" name="lat2"><br><br>
+        <p>Define the increment</p>
+        <label for="lat1">increment:</label>
+        <input type="text" id="step" name="step"><br><br>
+        <input type="submit" onclick="Calculate">
+      </form>
+    </div>
+
+
+    <div class="column" style="float: left; width: 50%">
+      <div class="row">
+        <div class="column" style="float: left; width: 50%">
+          <p id = "alt"></p>
+        </div>
+        <div class="column" style="float: left; width: 50%">
+          <p id = "lat"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  function Calculate(){
+    let alt1 = document.getElementById(alt1);
+    let lat1 = document.getElementById(lat1);
+    let alt2 = document.getElementById(alt2);
+    let lat2 = document.getElementById(lat2);
+    let step = document.getElementById(step);
+
+    let distance = acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon2-lon1))*6371;
+    const alt_array = [];
+    const lat_array = [];
+    let j = 0;
+    let alt = 0;
+    let lat = 0;
+    for(let i = 0; i < distance; i = i + step){
+      if(alt1 > alt2){
+        let temp = alt2;
+        alt1 = alt2;
+        alt2 = temp;
+        temp = lat1;
+        lat1 = lat2;
+        lat2 = temp;
+      }
+      alt_array[j] = alt = alt1 + i;
+      lat_array[j++] = (lat1-lat2)/(alt1-alt2) * (alt - alt1) + lat1
+    }
+    document.getElementById("alt").innerHTML = alt_array;
+    document.getElementById("lat").innerHTML = lat_array;
+
+  }
+</script>
+
+</body>
+
+</html>
