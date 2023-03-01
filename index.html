@@ -28,7 +28,7 @@
 <div class="container">
   <div class="row">
     <div class="column" style="float: left; width: 50%">
-      <form>
+      <form onsubmit="Calculate()">
         <p>Input Altitude and latitude of starting point</p>
         <label for="alt1">Starting Altitude:</label>
         <input type="text" id="alt1" name="alt1"><br><br>
@@ -42,7 +42,7 @@
         <p>Define the increment</p>
         <label for="lat1">increment:</label>
         <input type="text" id="step" name="step"><br><br>
-        <input type="submit" onclick="Calculate">
+        <input type="submit">
       </form>
     </div>
 
@@ -63,11 +63,12 @@
 
 <script>
   function Calculate(){
-    let alt1 = document.getElementById(alt1);
-    let lat1 = document.getElementById(lat1);
-    let alt2 = document.getElementById(alt2);
-    let lat2 = document.getElementById(lat2);
-    let step = document.getElementById(step);
+    alert("The function 'Calculate' is executed");
+    let alt1 = document.getElementById("alt1").value;
+    let lat1 = document.getElementById("lat1").value;
+    let alt2 = document.getElementById("alt2").value;
+    let lat2 = document.getElementById("lat2").value;
+    let step = document.getElementById("step").value;
 
     let distance = acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon2-lon1))*6371;
     const alt_array = [];
@@ -87,10 +88,14 @@
       alt_array[j] = alt = alt1 + i;
       lat_array[j++] = (lat1-lat2)/(alt1-alt2) * (alt - alt1) + lat1
     }
-    document.getElementById("alt").innerHTML = alt_array;
-    document.getElementById("lat").innerHTML = lat_array;
+    document.getElementById("alt").innerHTML.value = alt_array;
+    document.getElementById("lat").innerHTML.value = lat_array;
+    alert(alt_array);
+    alert(lat_array);
 
   }
+
+
 </script>
 
 </body>
