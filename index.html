@@ -30,17 +30,17 @@
     <div class="column" style="float: left; width: 50%">
       <form onsubmit="Calculate()">
         <p>Input Altitude and latitude of starting point</p>
-        <label for="alt1">Starting Altitude:</label>
-        <input type="text" id="alt1" name="alt1"><br><br>
-        <label for="lat1">Starting Latitude:</label>
+        <label for="lat1">Starting Altitude:</label>
         <input type="text" id="lat1" name="lat1"><br><br>
+        <label for="lon1">Starting Latitude:</label>
+        <input type="text" id="lon1" name="lon1"><br><br>
         <p>Input Altitude and latitude of end point</p>
-        <label for="alt2">Ending Altitude:</label>
-        <input type="text" id="alt2" name="alt2"><br><br>
-        <label for="lat1">Ending Latitude:</label>
+        <label for="lat2">Ending Altitude:</label>
         <input type="text" id="lat2" name="lat2"><br><br>
+        <label for="lon2">Ending Latitude:</label>
+        <input type="text" id="lon2" name="lon2"><br><br>
         <p>Define the increment</p>
-        <label for="lat1">increment:</label>
+        <label for="step">increment:</label>
         <input type="text" id="step" name="step"><br><br>
         <input type="submit">
       </form>
@@ -50,10 +50,10 @@
     <div class="column" style="float: left; width: 50%">
       <div class="row">
         <div class="column" style="float: left; width: 50%">
-          <p id = "alt"></p>
+          <p id = "lat"></p>
         </div>
         <div class="column" style="float: left; width: 50%">
-          <p id = "lat"></p>
+          <p id = "lon"></p>
         </div>
       </div>
     </div>
@@ -62,35 +62,54 @@
 
 
 <script>
+
+  function Distance(lat1, lon1, lat2, lon2) {
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+      return 0;
+    }
+    else {
+      var radlat1 = Math.PI * lat1/180;
+      var radlat2 = Math.PI * lat2/180;
+      var theta = lon1-lon2;
+      var radtheta = Math.PI * theta/180;
+      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      if (dist > 1) {
+        dist = 1;
+      }
+      dist = Math.acos(dist);
+      dist = dist * 180/Math.PI;
+      dist = dist * 60 * 1.1515;
+      dist = dist * 1.609344;
+      return dist;
+    }
+  }
   function Calculate(){
     alert("The function 'Calculate' is executed");
-    let alt1 = document.getElementById("alt1").value;
     let lat1 = document.getElementById("lat1").value;
-    let alt2 = document.getElementById("alt2").value;
+    let lon1 = document.getElementById("lon1").value;
     let lat2 = document.getElementById("lat2").value;
+    let lon2 = document.getElementById("lon2").value;
     let step = document.getElementById("step").value;
 
-    let distance = acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon2-lon1))*6371;
-    const alt_array = [];
+    let distance = Distance(lat1, lon1, lat2, lon2);
     const lat_array = [];
+    const lon_array = [];
     let j = 0;
-    let alt = 0;
-    let lat = 0;
     for(let i = 0; i < distance; i = i + step){
-      if(alt1 > alt2){
-        let temp = alt2;
-        alt1 = alt2;
-        alt2 = temp;
-        temp = lat1;
+      if(lat1 > lat2){
+        let temp = lat2;
         lat1 = lat2;
         lat2 = temp;
+        temp = lon1;
+        lon1 = lon2;
+        lon2 = temp;
       }
-      alt_array[j] = alt = alt1 + i;
-      lat_array[j++] = (lat1-lat2)/(alt1-alt2) * (alt - alt1) + lat1
+      lat_array[j] = lat1 + i;
+      lon_array[j++] = (lon1-lon2)/(lat1-lat2) * i + lon1;
     }
-    document.getElementById("alt").innerHTML.value = alt_array;
+    document.getElementById("alt").innerHTML.value = lat_array;
     document.getElementById("lat").innerHTML.value = lat_array;
-    alert(alt_array);
+    alert(lat_array);
     alert(lat_array);
 
   }
