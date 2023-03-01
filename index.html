@@ -55,6 +55,9 @@
         <div class="column" style="float: left; width: 50%">
           <p id = "lon"></p>
         </div>
+        <div class="column" style="float: left; width: 50%">
+          <div id = "dist"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +93,7 @@
     let lat2 = document.getElementById("lat2").value;
     let lon2 = document.getElementById("lon2").value;
     let step = document.getElementById("step").value;
+    let dist = document.getElementById("dist").value;
 
     let distance = Distance(lat1, lon1, lat2, lon2);
     const lat_array = [];
@@ -109,9 +113,7 @@
     }
     document.getElementById("alt").innerHTML.value = lat_array;
     document.getElementById("lat").innerHTML.value = lat_array;
-    alert(lat_array);
-    alert(lat_array);
-
+    dist.innerHTML.value = distance.value;
   }
 
 
