@@ -2,121 +2,137 @@
 <html class="no-js" lang="">
 
 <head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
 
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
 
-  <meta name="theme-color" content="#fafafa">
+    <meta name="theme-color" content="#fafafa">
 </head>
 
 <body>
 
 <!-- Add your site or application content here -->
 <div class="container">
-  <div class="row">
-    <div class="column" style="float: left; width: 50%">
-        <p>Input Altitude and latitude of starting point</p>
-        <label for="lat1">Starting Altitude:</label>
-        <input type="text" id="lat1" name="lat1"><br><br>
-        <label for="lon1">Starting Latitude:</label>
-        <input type="text" id="lon1" name="lon1"><br><br>
-        <p>Input Altitude and latitude of end point</p>
-        <label for="lat2">Ending Altitude:</label>
-        <input type="text" id="lat2" name="lat2"><br><br>
-        <label for="lon2">Ending Latitude:</label>
-        <input type="text" id="lon2" name="lon2"><br><br>
-        <p>Define the increment</p>
-        <label for="step">increment:</label>
-        <input type="text" id="step" name="step"><br><br>
-        <button onclick = "Calculate()">Submit</button>
-      </form>
-    </div>
+    <div class="row">
+        <div class="column" style="float: left; width: 50%">
+            <p>Input Altitude and latitude of starting point</p>
+            <label for="lat1">Starting Altitude:</label>
+            <input type="text" id="lat1" name="lat1"><br><br>
+            <label for="lon1">Starting Latitude:</label>
+            <input type="text" id="lon1" name="lon1"><br><br>
+            <p>Input Altitude and latitude of end point</p>
+            <label for="lat2">Ending Altitude:</label>
+            <input type="text" id="lat2" name="lat2"><br><br>
+            <label for="lon2">Ending Latitude:</label>
+            <input type="text" id="lon2" name="lon2"><br><br>
+            <p>Define the increment</p>
+            <label for="step">increment:</label>
+            <input type="text" id="step" name="step"><br><br>
+            <button onclick = "Calculate()">Submit</button>
+            </form>
+        </div>
 
 
-    <div class="column" style="float: left; width: 50%">
-      <div class="row">
         <div class="column" style="float: left; width: 50%">
-          <p id = "lat"></p>
+            <div class="row">
+                <div class="column" style="float: left; width: 33%">
+                    <p>latitudes</p>
+                    <p id = "lat"></p>
+                </div>
+                <div class="column" style="float: left; width: 33%">
+                    <p>longitudes</p>
+                    <div id = "lon"></div>
+                </div>
+                <div class="column" style="float: left; width: 33%">
+                    <p>distancia total</p>
+                    <div id = "dist"></div>
+                </div>
+            </div>
         </div>
-        <div class="column" style="float: left; width: 50%">
-          <p id = "lon"></p>
-        </div>
-        <div class="column" style="float: left; width: 50%">
-          <p id = "dist"></p>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
 
 <script>
 
-  function Distance(lat1, lon1, lat2, lon2) {
-    if ((lat1 == lat2) && (lon1 == lon2)) {
-      return 0;
+    function Distance(lat1, lon1, lat2, lon2) {
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        }
+        else {
+            var radlat1 = Math.PI * lat1/180;
+            var radlat2 = Math.PI * lat2/180;
+            var theta = lon1-lon2;
+            var radtheta = Math.PI * theta/180;
+            var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+            if (dist > 1) {
+                dist = 1;
+            }
+            dist = Math.acos(dist);
+            dist = dist * 180/Math.PI;
+            dist = dist * 60 * 1.1515;
+            dist = dist * 1.609344;
+            return dist;
+        }
     }
-    else {
-      var radlat1 = Math.PI * lat1/180;
-      var radlat2 = Math.PI * lat2/180;
-      var theta = lon1-lon2;
-      var radtheta = Math.PI * theta/180;
-      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-      if (dist > 1) {
-        dist = 1;
-      }
-      dist = Math.acos(dist);
-      dist = dist * 180/Math.PI;
-      dist = dist * 60 * 1.1515;
-      dist = dist * 1.609344;
-      return dist;
+    function Calculate(){
+        alert("The function 'Calculate' is executed");
+        let lat1 = document.getElementById("lat1").value;
+        let lon1 = document.getElementById("lon1").value;
+        let lat2 = document.getElementById("lat2").value;
+        let lon2 = document.getElementById("lon2").value;
+        let step = document.getElementById("step").value;
+
+        let distance = Distance(lat1, lon1, lat2, lon2);
+        document.getElementById('dist').innerText = distance;
+        // alert(distance);
+        const lat_array = [];
+        const lon_array = [];
+        // let j = 0;
+        // for(let i = 0; i < distance; i = i + step){
+        //     if(lat1 > lat2){
+        //         let temp = lat2;
+        //         lat1 = lat2;
+        //         lat2 = temp;
+        //         temp = lon1;
+        //         lon1 = lon2;
+        //         lon2 = temp;
+        //     }
+        //     lat_array[j] = lat1 + i;
+        //     lon_array[j++] = (lon1-lon2)/(lat1-lat2) * i + lon1;
+        // }
+
+        var pointA = new Point(39.091868, -9.263187);
+        var pointB = new Point(39.089815, -9.261857);
+
+        var numberOfSteps = Math.floor(distance / step);
+        var coordinates = new Array();
+
+        for (var i = 0; i < numberOfSteps; i++) {
+            // coordinates.push(new Point((Math.abs(pointA.x - pointB.x) / 10) * i + pointB.y, (Math.abs(pointA.y - pointB.y) / numberOfPoints) * i + pointB.y));
+            lat_array.push((Math.abs(lat1 - lat2) / 10) * i + lon2);
+            lon_array.push((Math.abs(lon1 - lon2) / numberOfSteps) * i + lon2);
+        }
+
+        alert(lat_array);
+        document.getElementById('lat').innerText = lat_array.join('\r\n');
+        document.getElementById('lon').innerText = lon_array.join('\r\n');
+
+
     }
-  }
-  function Calculate(){
-    alert("The function 'Calculate' is executed");
-    let lat1 = document.getElementById("lat1").value;
-    let lon1 = document.getElementById("lon1").value;
-    let lat2 = document.getElementById("lat2").value;
-    let lon2 = document.getElementById("lon2").value;
-    let step = document.getElementById("step").value;
-    let dist = document.getElementById("dist").value;
-
-    let distance = Distance(lat1, lon1, lat2, lon2);
-    document.getElementById('dist').innerText = distance;
-    // alert(distance);
-    const lat_array = ["teste"];
-    const lon_array = ["teste"];
-    let j = 0;
-    for(let i = 0; i < distance; i = i + step){
-      if(lat1 > lat2){
-        let temp = lat2;
-        lat1 = lat2;
-        lat2 = temp;
-        temp = lon1;
-        lon1 = lon2;
-        lon2 = temp;
-      }
-      lat_array[j] = lat1 + i;
-      lon_array[j++] = (lon1-lon2)/(lat1-lat2) * i + lon1;
-    }
-    document.getElementById("alt").innerText = lat_array;
-    document.getElementById("lat").innerText = lon_array;
-
-
-  }
 
 
 
