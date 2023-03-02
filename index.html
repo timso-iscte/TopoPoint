@@ -27,7 +27,7 @@
 <!-- Add your site or application content here -->
 <div class="container">
     <div class="row">
-        <div class="column" style="float: left; width: 50%">
+        <div class="column" style="float: left; width: 40%">
             <p>Input Altitude and latitude of starting point</p>
             <label for="lat1">Starting Altitude:</label>
             <input type="text" id="lat1" name="lat1"><br><br>
@@ -46,17 +46,17 @@
         </div>
 
 
-        <div class="column" style="float: left; width: 50%">
+        <div class="column" style="float: left; width: 60%">
             <div class="row">
-                <div class="column" style="float: left; width: 33%">
+                <div class="column" style="float: left; width: 40%">
                     <p>latitudes</p>
                     <p id = "lat"></p>
                 </div>
-                <div class="column" style="float: left; width: 33%">
+                <div class="column" style="float: left; width: 40%">
                     <p>longitudes</p>
                     <div id = "lon"></div>
                 </div>
-                <div class="column" style="float: left; width: 33%">
+                <div class="column" style="float: left; width: 20%">
                     <p>distancia total</p>
                     <div id = "dist"></div>
                 </div>
@@ -89,12 +89,19 @@
         }
     }
     function Calculate(){
-        alert("The function 'Calculate' is executed");
-        let lat1 = document.getElementById("lat1").value;
-        let lon1 = document.getElementById("lon1").value;
-        let lat2 = document.getElementById("lat2").value;
-        let lon2 = document.getElementById("lon2").value;
-        let step = document.getElementById("step").value;
+        // alert("The function 'Calculate' is executed");
+        // let lat1 = document.getElementById("lat1").value;
+        // let lon1 = document.getElementById("lon1").value;
+        // let lat2 = document.getElementById("lat2").value;
+        // let lon2 = document.getElementById("lon2").value;
+        // let step = document.getElementById("step").value;
+
+//test parameters
+        let lat1 = 38.77312066025468;
+        let lon1 = -9.233858166510075;
+        let lat2 = 38.85426159295318;
+        let lon2 = -9.183768403982254;
+        let step = 5;
 
         let distance = Distance(lat1, lon1, lat2, lon2);
         document.getElementById('dist').innerText = distance;
@@ -115,19 +122,19 @@
         //     lon_array[j++] = (lon1-lon2)/(lat1-lat2) * i + lon1;
         // }
 
-        var pointA = new Point(39.091868, -9.263187);
-        var pointB = new Point(39.089815, -9.261857);
+        // var pointA = new Point(39.091868, -9.263187);
+        // var pointB = new Point(39.089815, -9.261857);
 
-        var numberOfSteps = Math.floor(distance / step);
+        var numberOfSteps = Math.floor((distance / step) - 1);
         var coordinates = new Array();
 
-        for (var i = 0; i < numberOfSteps; i++) {
+        for (var i = 1; i <= numberOfSteps; i++) {
             // coordinates.push(new Point((Math.abs(pointA.x - pointB.x) / 10) * i + pointB.y, (Math.abs(pointA.y - pointB.y) / numberOfPoints) * i + pointB.y));
-            lat_array.push((Math.abs(lat1 - lat2) / 10) * i + lon2);
-            lon_array.push((Math.abs(lon1 - lon2) / numberOfSteps) * i + lon2);
+            let lat_inc = (Math.abs((lat1 - lat2) / 10) * i + lon2);
+            lat_array.push(lat1 + lat_inc);
+            let lon_inc = (Math.abs((lon1 - lon2) / numberOfSteps) * i + lon2);
+            lon_array.push(lon1 + lon_inc);
         }
-
-        alert(lat_array);
         document.getElementById('lat').innerText = lat_array.join('\r\n');
         document.getElementById('lon').innerText = lon_array.join('\r\n');
 
