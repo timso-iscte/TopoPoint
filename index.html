@@ -90,50 +90,35 @@
     }
     function Calculate(){
         // alert("The function 'Calculate' is executed");
-        // let lat1 = document.getElementById("lat1").value;
-        // let lon1 = document.getElementById("lon1").value;
-        // let lat2 = document.getElementById("lat2").value;
-        // let lon2 = document.getElementById("lon2").value;
-        // let step = document.getElementById("step").value;
+        let lat1 = document.getElementById("lat1").value;
+        let lon1 = document.getElementById("lon1").value;
+        let lat2 = document.getElementById("lat2").value;
+        let lon2 = document.getElementById("lon2").value;
+        let step = document.getElementById("step").value;
 
 //test parameters
-        let lat1 = 38.77312066025468;
-        let lon1 = -9.233858166510075;
-        let lat2 = 38.85426159295318;
-        let lon2 = -9.183768403982254;
-        let step = 5;
+//         let lat1 = 38.77312066025468;
+//         let lon1 = -9.233858166510075;
+//         let lat2 = 38.85426159295318;
+//         let lon2 = -9.183768403982254;
+//         let step = 1;
 
         let distance = Distance(lat1, lon1, lat2, lon2);
         document.getElementById('dist').innerText = distance;
-        // alert(distance);
+
         const lat_array = [];
         const lon_array = [];
-        // let j = 0;
-        // for(let i = 0; i < distance; i = i + step){
-        //     if(lat1 > lat2){
-        //         let temp = lat2;
-        //         lat1 = lat2;
-        //         lat2 = temp;
-        //         temp = lon1;
-        //         lon1 = lon2;
-        //         lon2 = temp;
-        //     }
-        //     lat_array[j] = lat1 + i;
-        //     lon_array[j++] = (lon1-lon2)/(lat1-lat2) * i + lon1;
-        // }
 
-        // var pointA = new Point(39.091868, -9.263187);
-        // var pointB = new Point(39.089815, -9.261857);
+        let numberOfSteps = Math.floor((distance / step));
 
-        var numberOfSteps = Math.floor((distance / step) - 1);
-        var coordinates = new Array();
+        let lat_step = Math.abs(lat1 - lat2) / numberOfSteps;
+        let lon_step = Math.abs(lon1 - lon2) / numberOfSteps;
 
-        for (var i = 1; i <= numberOfSteps; i++) {
+
+        for (let i = 0; i <= numberOfSteps; i++) {
             // coordinates.push(new Point((Math.abs(pointA.x - pointB.x) / 10) * i + pointB.y, (Math.abs(pointA.y - pointB.y) / numberOfPoints) * i + pointB.y));
-            let lat_inc = (Math.abs((lat1 - lat2) / 10) * i + lon2);
-            lat_array.push(lat1 + lat_inc);
-            let lon_inc = (Math.abs((lon1 - lon2) / numberOfSteps) * i + lon2);
-            lon_array.push(lon1 + lon_inc);
+            lat_array.push(parseFloat(lat1) + parseFloat((lat_step * i)));
+            lon_array.push(parseFloat(lon1) + parseFloat((lon_step * i)));
         }
         document.getElementById('lat').innerText = lat_array.join('\r\n');
         document.getElementById('lon').innerText = lon_array.join('\r\n');
