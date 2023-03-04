@@ -1,7 +1,7 @@
 # TODO list #
 
-* Fix algorithm to find intermediate coordenates given two points and a step
-  * possible geodesic problem
+* ~~Fix algorithm to find intermediate coordenates given two points and a step~~
+  * ~~possible geodesic problem~~
 * Change page lauout so that numbers don't overflow their column
 * Implement requests to https://www.opentopodata.org/ to get altitude of a given point
   * Either GET or POST (tbd)
