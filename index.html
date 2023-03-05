@@ -73,11 +73,11 @@
             return 0;
         }
         else {
-            var radlat1 = Math.PI * lat1/180;
-            var radlat2 = Math.PI * lat2/180;
-            var theta = lon1-lon2;
-            var radtheta = Math.PI * theta/180;
-            var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+            let radlat1 = Math.PI * lat1/180;
+            let radlat2 = Math.PI * lat2/180;
+            let theta = lon1-lon2;
+            let radtheta = Math.PI * theta/180;
+            let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
             if (dist > 1) {
                 dist = 1;
             }
@@ -90,29 +90,29 @@
     }
     function Calculate(){
         // alert("The function 'Calculate' is executed");
-        let lat1 = document.getElementById("lat1").value;
-        let lon1 = document.getElementById("lon1").value;
-        let lat2 = document.getElementById("lat2").value;
-        let lon2 = document.getElementById("lon2").value;
-        let step = document.getElementById("step").value;
+        // let lat1 = document.getElementById("lat1").value;
+        // let lon1 = document.getElementById("lon1").value;
+        // let lat2 = document.getElementById("lat2").value;
+        // let lon2 = document.getElementById("lon2").value;
+        // let step = document.getElementById("step").value;
 
-//test parameters
-//         let lat1 = 38.77312066025468;
-//         let lon1 = -9.233858166510075;
-//         let lat2 = 38.85426159295318;
-//         let lon2 = -9.183768403982254;
-//         let step = 1;
+//test parameters with dist = 10Km
+        let lat1 = 38.77312066025468;
+        let lon1 = -9.233858166510075;
+        let lat2 = 38.85426159295318;
+        let lon2 = -9.183768403982254;
+        let step = 2.5;
 
-        let distance = Distance(lat1, lon1, lat2, lon2);
+        const distance = Distance(lat1, lon1, lat2, lon2);
         document.getElementById('dist').innerText = distance;
 
         const lat_array = [];
         const lon_array = [];
 
-        let numberOfSteps = Math.floor((distance / step));
+        const numberOfSteps = Math.floor((distance / step));
 
-        let lat_step = Math.abs(lat1 - lat2) / numberOfSteps;
-        let lon_step = Math.abs(lon1 - lon2) / numberOfSteps;
+        const lat_step = Math.abs(lat1 - lat2) / numberOfSteps;
+        const lon_step = Math.abs(lon1 - lon2) / numberOfSteps;
 
 
         for (let i = 0; i <= numberOfSteps; i++) {
@@ -121,10 +121,22 @@
         }
         document.getElementById('lat').innerText = lat_array.join('\r\n');
         document.getElementById('lon').innerText = lon_array.join('\r\n');
-
+        GetAltitude(lat_array, lon_array, numberOfSteps);
 
     }
 
+
+    async function GetAltitude(lat_array, lon_array, numberOfSteps){
+        const url = 'https://api.opentopodata.org/v1/eudem25m?locations=';
+        const elevation_array = [];
+        alert(url + lat_array[0] + "," + lon_array[0]);
+        for (let i = 0; i <= numberOfSteps; i++) {
+            let response = await fetch(url + lat_array[i] + "," + lon_array[i], { mode: 'no-cors'});
+            let data = await response.json();
+            elevation_array.push(JSON.parse(data).results.elevation);
+        }
+        alert(elevation_array);
+    }
 
 
 
