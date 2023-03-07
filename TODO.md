@@ -7,3 +7,4 @@
   * Either GET or POST (tbd)
 * JSON parser to get the altitude from the JSON object response
 * Print to HTML the result in the intended result (__distance_from_starting_coordenate__  __altitude__)
+* Add PowerShell -ExecutionPolicy Bypass to user guide

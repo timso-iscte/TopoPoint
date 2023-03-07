@@ -47,20 +47,8 @@
 
 
         <div class="column" style="float: left; width: 60%">
-            <div class="row">
-                <div class="column" style="float: left; width: 40%">
-                    <p>latitudes</p>
-                    <p id = "lat"></p>
-                </div>
-                <div class="column" style="float: left; width: 40%">
-                    <p>longitudes</p>
-                    <div id = "lon"></div>
-                </div>
-                <div class="column" style="float: left; width: 20%">
-                    <p>distancia total</p>
-                    <div id = "dist"></div>
-                </div>
-            </div>
+            <p>strings</p>
+            <p id = "strings"></p>
         </div>
     </div>
 </div>
@@ -104,10 +92,10 @@
         let step = 2.5;
 
         const distance = Distance(lat1, lon1, lat2, lon2);
-        document.getElementById('dist').innerText = distance;
 
         const lat_array = [];
         const lon_array = [];
+        const inc_distance = [];
 
         const numberOfSteps = Math.floor((distance / step));
 
@@ -118,24 +106,22 @@
         for (let i = 0; i <= numberOfSteps; i++) {
             lat_array.push(parseFloat(lat1) + parseFloat((lat_step * i)));
             lon_array.push(parseFloat(lon1) + parseFloat((lon_step * i)));
+            inc_distance.push(step * i);
         }
-        document.getElementById('lat').innerText = lat_array.join('\r\n');
-        document.getElementById('lon').innerText = lon_array.join('\r\n');
-        GetAltitude(lat_array, lon_array, numberOfSteps);
+        GetAltitude(lat_array, lon_array, numberOfSteps, inc_distance);
 
     }
 
 
-    async function GetAltitude(lat_array, lon_array, numberOfSteps){
+    async function GetAltitude(lat_array, lon_array, numberOfSteps, inc_distance){
         const url = 'https://api.opentopodata.org/v1/eudem25m?locations=';
         const elevation_array = [];
-        alert(url + lat_array[0] + "," + lon_array[0]);
         for (let i = 0; i <= numberOfSteps; i++) {
-            let response = await fetch(url + lat_array[i] + "," + lon_array[i], { mode: 'no-cors'});
-            let data = await response.json();
-            elevation_array.push(JSON.parse(data).results.elevation);
+            elevation_array.push(inc_distance[i] + " " + url + lat_array[i] + "," + lon_array[i]);
         }
         alert(elevation_array);
+        document.getElementById('strings').innerText = elevation_array.join('\r\n');
+
     }
 
 
