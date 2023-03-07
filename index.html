@@ -89,7 +89,7 @@
         let lon1 = -9.233858166510075;
         let lat2 = 38.85426159295318;
         let lon2 = -9.183768403982254;
-        let step = 2.5;
+        let step = 0.1;
 
         const distance = Distance(lat1, lon1, lat2, lon2);
 
@@ -106,7 +106,8 @@
         for (let i = 0; i <= numberOfSteps; i++) {
             lat_array.push(parseFloat(lat1) + parseFloat((lat_step * i)));
             lon_array.push(parseFloat(lon1) + parseFloat((lon_step * i)));
-            inc_distance.push(step * i);
+            let inc_step = step * i;
+            inc_distance.push(inc_step.toFixed(3));
         }
         GetAltitude(lat_array, lon_array, numberOfSteps, inc_distance);
 
@@ -121,7 +122,6 @@
         }
         alert(elevation_array);
         document.getElementById('strings').innerText = elevation_array.join('\r\n');
-
     }
 
 
