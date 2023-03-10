@@ -7,6 +7,6 @@ ExportFile="elevation.txt"
 
 while IFS=" " read -r step line
 do
-	echo "$step  $(curl -s $line | grep "elevation" | sed 's/[^0-9.]//g' )" | tee -a $ExportFile
+	echo ""$step"  $(curl -s $(echo "$line" | tr -d '\r') | grep "elevation" | sed 's/[^0-9.]//g' )" | tee -a $ExportFile
   sleep 1
 done < $File
