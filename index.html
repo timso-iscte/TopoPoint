@@ -101,11 +101,20 @@
         const lat_array = [];
         const lon_array = [];
         const inc_distance = [];
+        let lat_step = 0;
+        let lon_step = 0;
 
         const numberOfSteps = Math.floor((distance / step));
 
-        const lat_step = Math.abs(lat1 - lat2) / numberOfSteps;
-        const lon_step = Math.abs(lon1 - lon2) / numberOfSteps;
+        if (lat1 > lat2)
+            lat_step = -(Math.abs(lat1 - lat2) / numberOfSteps); //north to south
+        else
+            lat_step = Math.abs(lat1 - lat2) / numberOfSteps; //south to north
+        if(lon1  < lon2)
+            lon_step = -(Math.abs(lon1 - lon2) / numberOfSteps);
+        else
+            lon_step = Math.abs(lon1 - lon2) / numberOfSteps;
+
 
 
         for (let i = 0; i <= numberOfSteps; i++) {
@@ -125,7 +134,6 @@
         for (let i = 0; i <= numberOfSteps; i++) {
             elevation_array.push(inc_distance[i] + " " + url + lat_array[i] + "," + lon_array[i]);
         }
-        alert(elevation_array);
         let ExportData = elevation_array.join('\r\n');
         CreateDownloadFile('data.txt', ExportData);
     }
