@@ -1,3 +1,5 @@
+#PowerShell -ExecutionPolicy Bypass
+
 $ImportPath = Join-Path -Path $pwd -ChildPath "data.txt"
 $ExportPath = Join-Path -Path $pwd -ChildPath "elevation.txt"
 $FILE = Get-Content $ImportPath
