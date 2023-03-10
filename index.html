@@ -3,14 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
-    <meta name="description" content="">
+    <title>TopoPoint</title>
+    <meta name="description" content="JS script to calculate coordinates between two points given a step. To be used with additional scripts">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
+    <meta name="author" content="Tomás Martins">
 
     <link rel="manifest" href="site.webmanifest">
     <link rel="apple-touch-icon" href="icon.png">
@@ -26,29 +22,39 @@
 
 <!-- Add your site or application content here -->
 <div class="container">
+    <h1 style="text-align: center">TopoPoint</h1>
     <div class="row">
-        <div class="column" style="float: left; width: 40%">
-            <p>Input Altitude and latitude of starting point</p>
-            <label for="lat1">Starting Altitude:</label>
-            <input type="text" id="lat1" name="lat1"><br><br>
-            <label for="lon1">Starting Latitude:</label>
-            <input type="text" id="lon1" name="lon1"><br><br>
-            <p>Input Altitude and latitude of end point</p>
-            <label for="lat2">Ending Altitude:</label>
-            <input type="text" id="lat2" name="lat2"><br><br>
-            <label for="lon2">Ending Latitude:</label>
+        <div class="column" style="float: left; width: 30%">
+            <h2 style="text-align: center">Input Data</h2>
+            <p>Input Latitude and Longitude of starting point:</p>
+            <label for="lat1">Starting Latitude:</label>
+            <input type="text" id="lat1" name="lat1">
+            <label for="lon1">Starting Longitude:</label>
+            <input type="text" id="lon1" name="lon1">
+            <br><br>
+            <p>Input Latitude and Longitude of end point:</p>
+            <label for="lat2">Ending Latitude:</label>
+            <input type="text" id="lat2" name="lat2">
+            <label for="lon2">Ending Longitude:</label>
             <input type="text" id="lon2" name="lon2"><br><br>
-            <p>Define the increment</p>
+            <p>Define the increment (In Km):</p>
             <label for="step">increment:</label>
             <input type="text" id="step" name="step"><br><br>
-            <button onclick = "Calculate()">Submit</button>
+            <button onclick = "Calculate()">Download</button>
             </form>
         </div>
 
 
-        <div class="column" style="float: left; width: 60%">
-            <p>strings</p>
-            <p id = "strings"></p>
+        <div class="column" style="float: left; width: 70%">
+            <h2 style="text-align: center">Instructions</h2>
+            <p style="text-align: justify; margin: 0 auto; width: 30em">
+                The script works by receiving two coordinates and a step value, and calculates every coordinate spaced<br>
+                by a step between the starting and ending coordinates. It then writes to a file the required url for each point<br>
+                to be used on a GET request to <a href="https://opentopodata.org">opentopodata's</a> API.<br>
+                Due to CORS policy, the GET request cannot be made from the browser, so the Powershell/BASH scripts are needed.<br>
+                They must be provided along with this.
+            </p>
+            <h3 style="text-align: center">Please save the file in the same folder as the scripts, or else it won't work</h3>
         </div>
     </div>
 </div>
@@ -77,19 +83,18 @@
         }
     }
     function Calculate(){
-        // alert("The function 'Calculate' is executed");
-        // let lat1 = document.getElementById("lat1").value;
-        // let lon1 = document.getElementById("lon1").value;
-        // let lat2 = document.getElementById("lat2").value;
-        // let lon2 = document.getElementById("lon2").value;
-        // let step = document.getElementById("step").value;
+        let lat1 = document.getElementById("lat1").value;
+        let lon1 = document.getElementById("lon1").value;
+        let lat2 = document.getElementById("lat2").value;
+        let lon2 = document.getElementById("lon2").value;
+        let step = document.getElementById("step").value;
 
 //test parameters with dist = 10Km
-        let lat1 = 38.77312066025468;
-        let lon1 = -9.233858166510075;
-        let lat2 = 38.85426159295318;
-        let lon2 = -9.183768403982254;
-        let step = 0.1;
+//         let lat1 = 38.77312066025468;
+//         let lon1 = -9.233858166510075;
+//         let lat2 = 38.85426159295318;
+//         let lon2 = -9.183768403982254;
+//         let step = 0.1;
 
         const distance = Distance(lat1, lon1, lat2, lon2);
 
@@ -121,13 +126,34 @@
             elevation_array.push(inc_distance[i] + " " + url + lat_array[i] + "," + lon_array[i]);
         }
         alert(elevation_array);
-        document.getElementById('strings').innerText = elevation_array.join('\r\n');
+        let ExportData = elevation_array.join('\r\n');
+        CreateDownloadFile('data.txt', ExportData);
     }
 
+
+    function CreateDownloadFile(filename, text) {
+        let element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
 
 
 </script>
 
 </body>
+
+<footer style="position: absolute; bottom:0; width: 100%">
+    <p style="text-align: center">Author: Tomás Martins</p>
+    <p style="text-align: center"><a href="mailto:timso@iscte-iul.pt">timso@iscte-iul.pt</a></p>
+    <p style="text-align: center"><a href="mailto:tomasisidromartins@tecnico.ulisboa.pt">tomasisidromartins@tecnico.ulisboa.pt</a></p>
+    <p style="text-align: center"><a href="https://github.com/timso-iscte/TopoPoint" target="_blank">GitHub</a></p>
+</footer>
 
 </html>
