@@ -12,4 +12,5 @@ foreach ($LINE in $FILE){
 	$Response = Invoke-WebRequest -URI $LINE.Split(' ')[1]
 	$ParseResponse = $Response.Content | Out-String | ConvertFrom-Json
 	($LINE.Split(' ')[0] + " " + $ParseResponse.results.elevation) >> $pwd\elevation.txt
+	Start-Sleep -Seconds 1
 }
