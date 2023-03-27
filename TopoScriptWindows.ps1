@@ -11,6 +11,10 @@ If (Test-Path $ExportPath) {
 foreach ($LINE in $FILE){
 	$Response = Invoke-WebRequest -URI $LINE.Split(' ')[1]
 	$ParseResponse = $Response.Content | Out-String | ConvertFrom-Json
+	if($ParseResponse.results.elevation -eq $null){
+		($LINE.Split(' ')[0] + " 0") >> $pwd\elevation.txt
+	}else{
 	($LINE.Split(' ')[0] + " " + $ParseResponse.results.elevation) >> $pwd\elevation.txt
 	Start-Sleep -Seconds 1
+	}
 }
